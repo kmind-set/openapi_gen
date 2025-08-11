@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  title: Service
+  description: Description
+  version: '1.0'
+components:
+  schemas:
+    QueryStringParametersUser:
+      type: object
+      properties:
+        user:
+          type: string
+      required:
+      - user
+    QueryStringParametersOrganization:
+      type: object
+      properties:
+        organizationName:
+          type: string
+      required:
+      - organizationName
+    _QueryStringParameters:
+      oneOf:
+      - $ref: '#/components/schemas/QueryStringParametersUser'
+      - $ref: '#/components/schemas/QueryStringParametersOrganization'
+    _PathParametersuserId:
+      type: string
+    _OutputBody:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        response:
+          type: string
+      required:
+      - code
+      - message
+      - response
+  parameters:
+    _QueryStringParameters:
+      name: _QueryStringParameters
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/_QueryStringParameters'
+    _PathParametersuserId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        $ref: '#/components/schemas/_PathParametersuserId'
+  responses: {}
+  examples: {}
+paths:
+  /world/{userId}:
+    get:
+      operationId: myEndpoint
+      summary: My service description
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_OutputBody'
+          description: Success
+      parameters:
+      - $ref: '#/components/parameters/_QueryStringParameters'
+      - $ref: '#/components/parameters/_PathParametersuserId'
